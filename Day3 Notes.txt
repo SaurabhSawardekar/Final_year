@@ -1,0 +1,194 @@
+1 March (By Vedant)
+https://pastebin.com/raw/YAk9EGaN
+
+
+Process Management:
+```````````````````
+Process:
+````````
+- Any running program is a process
+- Multiple instances of the same program are processes.
+- Shell is also a process
+
+
+Process ID (PID)
+````````````````
+- Each linux process is identified by unique id PID 
+- Every process has a Parent Process ID (PPID)
+	+ Except "init"
+
+Create a Process:
+`````````````````
+Terminal#1
+```````````
+# sleep 100 
+
+ctrl+shift+n : To open new terminale
+
+Terminal#2
+```````````
+# ps -la		[ Show the processes with PID & PPID ]
+
+Managing Processes:
+````````````````````
+- Linux kernel tracks what each process is doing
+- Process is assigned a priority
+- Address space assigned to the process
+- Files is the process allowed to access
+- Is the process a ?:-
+	+ Parent
+	+ Child
+	+ Zombie
+
+=> Sometimes the parent dies first
+``````````````````````````````````
+- If the parent just exits or dies, the child process is left running
+- The child's PPID is no longer valid due to parent is gone.
+- Linux calls these children processes "Zombies"
+- In Linux a zombie is just a process in which the children are adopted by the "init" process
+- The init process will eventually cleanup the zombie childrens
+
+PPID[kill]
+	\___________PID[kill]
+
+PPID[die]
+	\___________PID[zombie]
+
+process manager: 
+````````````````
+ps, top, htop
+``````````````
+# top
+
+press 'q' to exit
+
+
+# sleep 10 & : to send process in background
+
+# ps 		[ PID - Process ID]
+# ps -l 	[ Show the PPID - Parent PID ]
+# ps -e		[ All the processes ]
+
+# ps -la
+
+Kill:
+-----
+# kill PID
+OR
+# kill -9 PID
+
+-9 : Forcefully
+
+# pkill sleep : to kill all process who's name is sleep
+
+# killall sleep : to kill all process who's name is sleep
+--------------------
+
+
+# sleep 10000 &
+# sleep 20000 &
+
+
+
+
+Check backgroup process:
+
+# jobs
+[1]-  Running                 sleep 10000 &
+[2]+  Running                 sleep 20000 &
+
+-  : Second last added in jobs
++  : last added in jobs
+
+# jobs -l	[ with PID ]
+[1]-   971 Running                 sleep 10000 &
+[2]+   972 Running                 sleep 20000 &
+
+
+# fg %2
+
+ctrl+z [stop]
+
+# bg %2 [ To start in BG ]
++++++++++++++++++++++++++++++++++++
+
+
+
+==================================================================================
+
+
+
+1st March
+
+1) Clone the machine
+2) run the commands on both machines:
+
+# dhclient -r [ To release the current IP address ]
+# dhclient [ To assign new ip address ]
+
+To check IP
+# ip -br -c a
+OR
+# ifconfig
+
+Machine A: 192.168.206.140
+Machine B: 192.168.206.139
+
+3) To check connectivity b/w machine A and machine B
+
+from A to B
+````````````
+# ping 192.168.206.139 -c 4
+
+-c : count 
+
+from B to A
+````````````
+# ping 192.168.206.140 -c 4
+
+-c : count 
+________________________________________________________________
+SSH : Secure Shell used to access remote machine on CLI.
+
+Proto: SSH
+Port: 22
+Server Side Package: openssh-server
+Client Side Package: openssh-client 
+
+Machine A [ Server ]
+`````````````````````
+1) Install the package:
+# apt install openssh-server -y
+
+2) Start SSH service:
+# systemctl <action> <service> 
+
+start, stop, restart, reload, status etc...
+
+# systemctl start ssh
+
+Machine B [ Client ]
+``````````````````````
+1) Install Client side package:
+
+# apt install openssh-client -y
+
+2) Access server (Machine A) from B
+
+# ssh username@192.168.206.xxx
+
+
+
+==================================================================================
+
+
+
+SFTP : Secure File Transfer Protocol
+`````````````````````````````````````
+Copy Local to Remote
+`````````````````````
+scp -r file edbda@192.168.206.xxx:/home/edbda
+
+Copy remote to local
+`````````````````````
+scp -r edbda@192.168.206.xxx:/home/edbda/file .
